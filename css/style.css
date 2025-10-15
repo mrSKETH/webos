@@ -1,0 +1,1844 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+:root {
+    --primary-color: #0078d4;
+    --primary-dark: #106ebe;
+    --primary-light: #50b0f0;
+    --accent-color: #6b69d6;
+    --success-color: #107c10;
+    --warning-color: #d83b01;
+    --error-color: #e81123;
+    --text-primary: #323130;
+    --text-secondary: #605e5c;
+    --bg-primary: #ffffff;
+    --bg-secondary: #f3f2f1;
+    --bg-tertiary: #edebe9;
+    --border-color: #d2d0ce;
+    --shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    --shadow-large: 0 8px 24px rgba(0, 0, 0, 0.2);
+}
+
+.dark-theme {
+    --primary-color: #0086f0;
+    --primary-dark: #106ebe;
+    --primary-light: #50b0f0;
+    --accent-color: #847ff0;
+    --text-primary: #ffffff;
+    --text-secondary: #d2d0ce;
+    --bg-primary: #1e1e1e;
+    --bg-secondary: #2d2d2d;
+    --bg-tertiary: #3c3c3c;
+    --border-color: #4a4a4a;
+    --shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    --shadow-large: 0 8px 24px rgba(0, 0, 0, 0.4);
+}
+
+body {
+    background: var(--primary-color);
+    overflow: hidden;
+    height: 100vh;
+    user-select: none;
+    transition: background-color 0.3s ease;
+    color: var(--text-primary);
+}
+
+/* Анимация загрузки */
+#boot-animation {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 10000;
+    color: white;
+}
+
+.boot-logo {
+    width: 120px;
+    height: 120px;
+    background-color: white;
+    border-radius: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 20px;
+    position: relative;
+    overflow: hidden;
+}
+
+.boot-logo::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(45deg, transparent, rgba(255,255,255,0.3), transparent);
+    transform: rotate(45deg);
+    animation: shine 2s infinite;
+}
+
+.boot-logo span {
+    font-size: 48px;
+    font-weight: bold;
+    color: var(--primary-color);
+    z-index: 1;
+}
+
+.boot-progress {
+    width: 300px;
+    height: 6px;
+    background-color: rgba(255, 255, 255, 0.3);
+    border-radius: 3px;
+    overflow: hidden;
+    margin-top: 20px;
+    position: relative;
+}
+
+.boot-progress-bar {
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg, #ffffff, var(--primary-light));
+    border-radius: 3px;
+    position: relative;
+    overflow: hidden;
+}
+
+.boot-progress-bar::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+    animation: shimmer 1.5s infinite;
+}
+
+/* Экран авторизации */
+#login-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, var(--accent-color), var(--primary-color));
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+
+.login-container {
+    background-color: rgba(255, 255, 255, 0.95);
+    border-radius: 16px;
+    padding: 40px;
+    width: 420px;
+    box-shadow: var(--shadow-large);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    transform: translateY(20px);
+    opacity: 0;
+}
+
+.login-container.loaded {
+    transform: translateY(0);
+    opacity: 1;
+}
+
+.login-header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.login-header h1 {
+    font-size: 32px;
+    margin-bottom: 10px;
+    background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.input-group {
+    position: relative;
+    margin-bottom: 20px;
+}
+
+.input-group input {
+    width: 100%;
+    padding: 14px 45px 14px 16px;
+    border: 2px solid var(--border-color);
+    border-radius: 8px;
+    font-size: 16px;
+    transition: all 0.3s ease;
+    background: var(--bg-primary);
+    color: var(--text-primary);
+}
+
+.input-group input:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(0, 120, 212, 0.1);
+}
+
+.input-icon {
+    position: absolute;
+    right: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 18px;
+    opacity: 0.6;
+}
+
+.login-btn {
+    width: 100%;
+    padding: 14px;
+    background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.login-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0, 120, 212, 0.4);
+}
+
+.login-btn:active {
+    transform: translateY(0);
+}
+
+.btn-loader {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 20px;
+    height: 20px;
+    border: 2px solid transparent;
+    border-top: 2px solid white;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    display: none;
+}
+
+.login-btn.loading .btn-loader {
+    display: block;
+}
+
+.login-btn.loading span {
+    opacity: 0;
+}
+
+/* Рабочий стол */
+#desktop {
+    width: 100%;
+    height: calc(100vh - 60px);
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    display: none;
+    position: relative;
+    overflow: hidden;
+}
+
+.wallpaper-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.1);
+    pointer-events: none;
+}
+
+.desktop-icons {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    align-items: flex-start;
+    position: relative;
+    z-index: 1;
+}
+
+.desktop-icon {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 80px;
+    padding: 12px 8px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-align: center;
+    position: relative;
+}
+
+.desktop-icon:hover {
+    background-color: rgba(255, 255, 255, 0.15);
+    transform: translateY(-2px);
+}
+
+.desktop-icon.selected {
+    background-color: rgba(255, 255, 255, 0.25);
+}
+
+.desktop-icon span:first-child {
+    font-size: 32px;
+    margin-bottom: 6px;
+    filter: drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.3));
+}
+
+.desktop-icon span:last-child {
+    font-size: 12px;
+    color: white;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7);
+    font-weight: 500;
+}
+
+/* Панель задач */
+#taskbar {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 60px;
+    background-color: rgba(255, 255, 255, 0.9);
+    backdrop-filter: blur(20px);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 20px;
+    z-index: 1000;
+    border-top: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.dark-theme #taskbar {
+    background-color: rgba(30, 30, 30, 0.9);
+    border-top-color: rgba(255, 255, 255, 0.1);
+}
+
+.taskbar-left {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.start-menu-btn {
+    background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+    border: none;
+    color: white;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 16px;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+}
+
+.start-menu-btn:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 12px rgba(0, 120, 212, 0.3);
+}
+
+.start-icon {
+    font-size: 18px;
+}
+
+.taskbar-apps {
+    display: flex;
+    gap: 5px;
+}
+
+.taskbar-app {
+    padding: 8px 16px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    color: var(--text-primary);
+    border: none;
+    background: transparent;
+}
+
+.taskbar-app:hover {
+    background-color: rgba(0, 0, 0, 0.1);
+}
+
+.dark-theme .taskbar-app:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.taskbar-app.active {
+    background-color: rgba(0, 120, 212, 0.15);
+    color: var(--primary-color);
+}
+
+.taskbar-center {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    max-width: 400px;
+}
+
+.quick-apps {
+    display: flex;
+    gap: 10px;
+    background: rgba(0, 0, 0, 0.05);
+    border-radius: 8px;
+    padding: 4px;
+}
+
+.dark-theme .quick-apps {
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.quick-app {
+    padding: 8px 12px;
+    border: none;
+    background: transparent;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-size: 16px;
+}
+
+.quick-app:hover {
+    background: rgba(0, 0, 0, 0.1);
+}
+
+.dark-theme .quick-app:hover {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.taskbar-right {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.system-tray {
+    display: flex;
+    gap: 8px;
+}
+
+.tray-icon {
+    padding: 6px;
+    border: none;
+    background: transparent;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    font-size: 14px;
+}
+
+.tray-icon:hover {
+    background-color: rgba(0, 0, 0, 0.1);
+}
+
+.dark-theme .tray-icon:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.time-date {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    font-size: 12px;
+    color: var(--text-primary);
+    cursor: pointer;
+    padding: 4px 8px;
+    border-radius: 4px;
+    transition: background-color 0.2s;
+}
+
+.time-date:hover {
+    background-color: rgba(0, 0, 0, 0.05);
+}
+
+.dark-theme .time-date:hover {
+    background-color: rgba(255, 255, 255, 0.05);
+}
+
+/* Меню Пуск */
+#start-menu {
+    position: fixed;
+    bottom: 70px;
+    left: 20px;
+    width: 480px;
+    height: 560px;
+    background-color: var(--bg-primary);
+    border-radius: 12px;
+    box-shadow: var(--shadow-large);
+    display: none;
+    z-index: 999;
+    overflow: hidden;
+    border: 1px solid var(--border-color);
+    transform: scale(0.9);
+    opacity: 0;
+    transform-origin: bottom left;
+}
+
+#start-menu.active {
+    transform: scale(1);
+    opacity: 1;
+}
+
+.start-menu-header {
+    padding: 24px;
+    background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+    color: white;
+}
+
+.user-info {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.user-avatar {
+    width: 48px;
+    height: 48px;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    backdrop-filter: blur(10px);
+}
+
+.user-details {
+    flex: 1;
+}
+
+.user-name {
+    font-weight: 600;
+    font-size: 16px;
+}
+
+.user-status {
+    font-size: 12px;
+    opacity: 0.8;
+}
+
+.start-menu-content {
+    padding: 20px;
+    height: calc(100% - 160px);
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.pinned-apps h3,
+.recent-apps h3 {
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 12px;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.apps-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+.app-icon {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 16px 12px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-align: center;
+    border: none;
+    background: transparent;
+    color: var(--text-primary);
+}
+
+.app-icon:hover {
+    background-color: var(--bg-secondary);
+    transform: translateY(-2px);
+}
+
+.app-icon span:first-child {
+    font-size: 24px;
+    margin-bottom: 6px;
+}
+
+.app-icon span:last-child {
+    font-size: 12px;
+    font-weight: 500;
+}
+
+.apps-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.app-list-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    border: none;
+    background: transparent;
+    color: var(--text-primary);
+    text-align: left;
+    width: 100%;
+}
+
+.app-list-item:hover {
+    background-color: var(--bg-secondary);
+}
+
+.app-list-item span:first-child {
+    font-size: 18px;
+    width: 24px;
+}
+
+.start-menu-footer {
+    padding: 16px 24px;
+    border-top: 1px solid var(--border-color);
+    display: flex;
+    justify-content: flex-end;
+}
+
+.power-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 16px;
+    background: var(--bg-secondary);
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    color: var(--text-primary);
+    font-size: 14px;
+}
+
+.power-btn:hover {
+    background: var(--bg-tertiary);
+    transform: translateY(-1px);
+}
+
+/* Окна приложений */
+.window {
+    position: absolute;
+    background-color: var(--bg-primary);
+    border-radius: 8px;
+    box-shadow: var(--shadow-large);
+    width: 800px;
+    height: 600px;
+    display: none;
+    z-index: 100;
+    top: 50px;
+    left: 50px;
+    overflow: hidden;
+    resize: both;
+    min-width: 400px;
+    min-height: 300px;
+    border: 1px solid var(--border-color);
+    transform: scale(0.95);
+    opacity: 0;
+}
+
+.window.active {
+    transform: scale(1);
+    opacity: 1;
+}
+
+.window.maximized {
+    width: 100% !important;
+    height: calc(100vh - 60px) !important;
+    top: 0 !important;
+    left: 0 !important;
+    border-radius: 0;
+    resize: none;
+    transform: none !important;
+}
+
+.window.minimized {
+    display: none !important;
+}
+
+.window-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--border-color);
+    cursor: move;
+    background-color: var(--bg-primary);
+    user-select: none;
+    position: relative;
+}
+
+.window-title {
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    color: var(--text-primary);
+}
+
+.window-controls {
+    display: flex;
+    gap: 4px;
+}
+
+.window-controls button {
+    background: none;
+    border: none;
+    font-size: 16px;
+    cursor: pointer;
+    width: 32px;
+    height: 32px;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+    color: var(--text-secondary);
+}
+
+.window-controls button:hover {
+    background-color: var(--bg-secondary);
+    color: var(--text-primary);
+}
+
+.close-btn:hover {
+    background-color: var(--error-color) !important;
+    color: white !important;
+}
+
+.window-content {
+    padding: 0;
+    height: calc(100% - 49px);
+    overflow: auto;
+    background: var(--bg-primary);
+}
+
+/* Контекстное меню */
+#context-menu {
+    position: fixed;
+    background-color: var(--bg-primary);
+    border-radius: 8px;
+    box-shadow: var(--shadow-large);
+    padding: 8px 0;
+    z-index: 2000;
+    display: none;
+    border: 1px solid var(--border-color);
+    min-width: 200px;
+    backdrop-filter: blur(20px);
+    background: rgba(255, 255, 255, 0.95);
+}
+
+.dark-theme #context-menu {
+    background: rgba(30, 30, 30, 0.95);
+}
+
+.context-menu-item {
+    padding: 10px 16px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 14px;
+    color: var(--text-primary);
+}
+
+.context-menu-item:hover {
+    background-color: var(--bg-secondary);
+}
+
+.context-menu-separator {
+    height: 1px;
+    background-color: var(--border-color);
+    margin: 4px 0;
+}
+
+/* Уведомления */
+#notifications {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 3000;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    max-width: 400px;
+}
+
+.notification {
+    background-color: var(--bg-primary);
+    border-radius: 8px;
+    box-shadow: var(--shadow-large);
+    padding: 16px;
+    width: 320px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    border-left: 4px solid var(--primary-color);
+    border: 1px solid var(--border-color);
+    transform: translateX(100%);
+    opacity: 0;
+}
+
+.notification.success {
+    border-left-color: var(--success-color);
+}
+
+.notification.warning {
+    border-left-color: var(--warning-color);
+}
+
+.notification.error {
+    border-left-color: var(--error-color);
+}
+
+.notification-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.notification-title {
+    font-weight: 600;
+    font-size: 14px;
+    color: var(--text-primary);
+}
+
+.notification-close {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    color: var(--text-secondary);
+    padding: 4px;
+    border-radius: 4px;
+    transition: all 0.2s;
+}
+
+.notification-close:hover {
+    background-color: var(--bg-secondary);
+    color: var(--text-primary);
+}
+
+.notification-message {
+    font-size: 13px;
+    color: var(--text-secondary);
+    line-height: 1.4;
+}
+
+/* Модальные окна */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 4000;
+    backdrop-filter: blur(5px);
+}
+
+.modal {
+    background: var(--bg-primary);
+    border-radius: 12px;
+    box-shadow: var(--shadow-large);
+    width: 400px;
+    max-width: 90vw;
+    border: 1px solid var(--border-color);
+    transform: scale(0.9);
+    opacity: 0;
+}
+
+.modal.active {
+    transform: scale(1);
+    opacity: 1;
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 24px 0;
+    margin-bottom: 16px;
+}
+
+.modal-header h3 {
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.modal-close {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 18px;
+    color: var(--text-secondary);
+    padding: 4px;
+    border-radius: 4px;
+    transition: all 0.2s;
+}
+
+.modal-close:hover {
+    background-color: var(--bg-secondary);
+    color: var(--text-primary);
+}
+
+.modal-content {
+    padding: 0 24px 24px;
+}
+
+.modal-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.modal-btn {
+    padding: 12px 16px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+    transition: all 0.2s ease;
+    text-align: left;
+}
+
+.shutdown-btn {
+    background: var(--error-color);
+    color: white;
+}
+
+.shutdown-btn:hover {
+    background: #c50f1f;
+}
+
+.restart-btn {
+    background: var(--warning-color);
+    color: white;
+}
+
+.restart-btn:hover {
+    background: #b32d00;
+}
+
+.logout-btn {
+    background: var(--primary-color);
+    color: white;
+}
+
+.logout-btn:hover {
+    background: var(--primary-dark);
+}
+
+.cancel-btn {
+    background: var(--bg-secondary);
+    color: var(--text-primary);
+}
+
+.cancel-btn:hover {
+    background: var(--bg-tertiary);
+}
+
+/* Стили для конкретных приложений */
+.app-content {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Калькулятор */
+.calculator-app {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: var(--bg-secondary);
+}
+
+.calculator {
+    width: 280px;
+    background-color: var(--bg-primary);
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: var(--shadow);
+    border: 1px solid var(--border-color);
+}
+
+.calculator-display {
+    width: 100%;
+    height: 60px;
+    background-color: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    padding: 0 15px;
+    font-size: 24px;
+    font-family: 'Segoe UI', monospace;
+    overflow: hidden;
+    color: var(--text-primary);
+    font-weight: 500;
+}
+
+.calculator-buttons {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+}
+
+.calculator-btn {
+    height: 50px;
+    border: none;
+    border-radius: 8px;
+    background-color: var(--bg-secondary);
+    cursor: pointer;
+    font-size: 18px;
+    transition: all 0.2s ease;
+    color: var(--text-primary);
+    font-weight: 500;
+}
+
+.calculator-btn:hover {
+    background-color: var(--bg-tertiary);
+    transform: translateY(-1px);
+}
+
+.calculator-btn:active {
+    transform: translateY(0);
+}
+
+.calculator-btn.operator {
+    background-color: var(--primary-color);
+    color: white;
+}
+
+.calculator-btn.operator:hover {
+    background-color: var(--primary-dark);
+}
+
+.calculator-btn.equals {
+    background-color: var(--success-color);
+    color: white;
+}
+
+.calculator-btn.equals:hover {
+    background-color: #0e6b0e;
+}
+
+.calculator-btn.function {
+    background-color: var(--warning-color);
+    color: white;
+}
+
+.calculator-btn.function:hover {
+    background-color: #b32d00;
+}
+
+/* Браузер */
+.browser-app {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.browser-toolbar {
+    display: flex;
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--border-color);
+    gap: 10px;
+    align-items: center;
+    background: var(--bg-primary);
+}
+
+.browser-nav {
+    display: flex;
+    gap: 8px;
+}
+
+.browser-nav-btn {
+    padding: 8px;
+    border: none;
+    background: var(--bg-secondary);
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s;
+    color: var(--text-primary);
+}
+
+.browser-nav-btn:hover {
+    background: var(--bg-tertiary);
+}
+
+.browser-nav-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.browser-url-bar {
+    flex: 1;
+    display: flex;
+    gap: 8px;
+}
+
+.browser-url {
+    flex: 1;
+    padding: 10px 12px;
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    font-size: 14px;
+    background: var(--bg-primary);
+    color: var(--text-primary);
+}
+
+.browser-url:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 2px rgba(0, 120, 212, 0.1);
+}
+
+.browser-go {
+    padding: 10px 16px;
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+    transition: all 0.2s;
+}
+
+.browser-go:hover {
+    background-color: var(--primary-dark);
+    transform: translateY(-1px);
+}
+
+.browser-content {
+    flex: 1;
+    border: none;
+    background: white;
+}
+
+/* Блокнот */
+.notepad-app {
+    padding: 0;
+    height: 100%;
+}
+
+.notepad-toolbar {
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--border-color);
+    display: flex;
+    gap: 10px;
+    background: var(--bg-primary);
+}
+
+.notepad-btn {
+    padding: 8px 12px;
+    border: none;
+    background: var(--bg-secondary);
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 13px;
+    transition: all 0.2s;
+    color: var(--text-primary);
+}
+
+.notepad-btn:hover {
+    background: var(--bg-tertiary);
+}
+
+.notepad-textarea {
+    width: 100%;
+    height: calc(100% - 57px);
+    border: none;
+    resize: none;
+    padding: 16px;
+    font-family: 'Consolas', 'Monaco', monospace;
+    font-size: 14px;
+    line-height: 1.5;
+    background: var(--bg-primary);
+    color: var(--text-primary);
+    outline: none;
+}
+
+.notepad-textarea::placeholder {
+    color: var(--text-secondary);
+}
+
+/* Проводник */
+.explorer-app {
+    display: flex;
+    height: 100%;
+}
+
+.explorer-sidebar {
+    width: 250px;
+    background: var(--bg-secondary);
+    border-right: 1px solid var(--border-color);
+    padding: 16px 0;
+    overflow-y: auto;
+}
+
+.explorer-content {
+    flex: 1;
+    padding: 20px;
+    overflow-y: auto;
+    background: var(--bg-primary);
+}
+
+.sidebar-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 16px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    color: var(--text-primary);
+    border: none;
+    background: transparent;
+    width: 100%;
+    text-align: left;
+    font-size: 14px;
+}
+
+.sidebar-item:hover {
+    background: var(--bg-tertiary);
+}
+
+.sidebar-item.active {
+    background: var(--primary-color);
+    color: white;
+}
+
+.file-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+    gap: 16px;
+}
+
+.file-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 16px 12px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-align: center;
+    border: none;
+    background: transparent;
+    color: var(--text-primary);
+}
+
+.file-item:hover {
+    background: var(--bg-secondary);
+    transform: translateY(-2px);
+}
+
+.file-item.selected {
+    background: rgba(0, 120, 212, 0.1);
+    border: 1px solid var(--primary-color);
+}
+
+.file-icon {
+    font-size: 32px;
+    margin-bottom: 8px;
+}
+
+.file-name {
+    font-size: 12px;
+    font-weight: 500;
+    word-break: break-word;
+}
+
+/* Настройки */
+.settings-app {
+    padding: 0;
+    height: 100%;
+}
+
+.settings-sidebar {
+    width: 200px;
+    background: var(--bg-secondary);
+    border-right: 1px solid var(--border-color);
+    padding: 20px 0;
+}
+
+.settings-content {
+    flex: 1;
+    padding: 0;
+    overflow-y: auto;
+}
+
+.settings-category {
+    padding: 12px 20px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    color: var(--text-primary);
+    border: none;
+    background: transparent;
+    width: 100%;
+    text-align: left;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.settings-category:hover {
+    background: var(--bg-tertiary);
+}
+
+.settings-category.active {
+    background: var(--primary-color);
+    color: white;
+}
+
+.settings-page {
+    padding: 30px;
+    display: none;
+}
+
+.settings-page.active {
+    display: block;
+}
+
+.settings-section {
+    margin-bottom: 30px;
+}
+
+.settings-section h3 {
+    margin-bottom: 16px;
+    font-weight: 600;
+    color: var(--text-primary);
+    font-size: 18px;
+}
+
+.settings-option {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.settings-option:last-child {
+    border-bottom: none;
+}
+
+.option-label {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.option-title {
+    font-weight: 500;
+    color: var(--text-primary);
+}
+
+.option-description {
+    font-size: 12px;
+    color: var(--text-secondary);
+}
+
+/* Переключатель */
+.toggle-switch {
+    position: relative;
+    display: inline-block;
+    width: 52px;
+    height: 28px;
+}
+
+.toggle-switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.toggle-slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: var(--border-color);
+    transition: .3s;
+    border-radius: 28px;
+}
+
+.toggle-slider:before {
+    position: absolute;
+    content: "";
+    height: 20px;
+    width: 20px;
+    left: 4px;
+    bottom: 4px;
+    background-color: white;
+    transition: .3s;
+    border-radius: 50%;
+}
+
+input:checked + .toggle-slider {
+    background-color: var(--primary-color);
+}
+
+input:checked + .toggle-slider:before {
+    transform: translateX(24px);
+}
+
+/* Выбор темы */
+.theme-selector {
+    display: flex;
+    gap: 12px;
+    margin-top: 12px;
+}
+
+.theme-option {
+    flex: 1;
+    padding: 16px;
+    border: 2px solid var(--border-color);
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-align: center;
+    background: var(--bg-primary);
+}
+
+.theme-option:hover {
+    border-color: var(--primary-color);
+    transform: translateY(-2px);
+}
+
+.theme-option.selected {
+    border-color: var(--primary-color);
+    background: rgba(0, 120, 212, 0.05);
+}
+
+.theme-preview {
+    width: 60px;
+    height: 40px;
+    border-radius: 6px;
+    margin: 0 auto 8px;
+    border: 1px solid var(--border-color);
+}
+
+.theme-light .theme-preview {
+    background: linear-gradient(135deg, #ffffff, #f3f2f1);
+}
+
+.theme-dark .theme-preview {
+    background: linear-gradient(135deg, #1e1e1e, #2d2d2d);
+}
+
+.theme-auto .theme-preview {
+    background: linear-gradient(135deg, #ffffff 50%, #1e1e1e 50%);
+}
+
+/* Календарь */
+.calendar-app {
+    padding: 20px;
+}
+
+.calendar-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.calendar-nav {
+    display: flex;
+    gap: 10px;
+}
+
+.calendar-nav-btn {
+    padding: 8px 12px;
+    border: none;
+    background: var(--bg-secondary);
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s;
+    color: var(--text-primary);
+}
+
+.calendar-nav-btn:hover {
+    background: var(--bg-tertiary);
+}
+
+.calendar-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 1px;
+    background: var(--border-color);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.calendar-day-header {
+    padding: 12px;
+    text-align: center;
+    font-weight: 600;
+    font-size: 12px;
+    background: var(--bg-secondary);
+    color: var(--text-primary);
+    text-transform: uppercase;
+}
+
+.calendar-day {
+    padding: 12px;
+    text-align: center;
+    background: var(--bg-primary);
+    cursor: pointer;
+    transition: all 0.2s;
+    color: var(--text-primary);
+    border: none;
+    min-height: 60px;
+}
+
+.calendar-day:hover {
+    background: var(--bg-secondary);
+}
+
+.calendar-day.other-month {
+    color: var(--text-secondary);
+    background: var(--bg-tertiary);
+}
+
+.calendar-day.today {
+    background: var(--primary-color);
+    color: white;
+}
+
+.calendar-day.selected {
+    background: var(--accent-color);
+    color: white;
+}
+
+/* Рисование */
+.paint-app {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.paint-toolbar {
+    display: flex;
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--border-color);
+    gap: 12px;
+    align-items: center;
+    background: var(--bg-primary);
+}
+
+.paint-tools {
+    display: flex;
+    gap: 8px;
+}
+
+.paint-tool {
+    padding: 8px;
+    border: none;
+    background: var(--bg-secondary);
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s;
+    color: var(--text-primary);
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.paint-tool:hover {
+    background: var(--bg-tertiary);
+}
+
+.paint-tool.active {
+    background: var(--primary-color);
+    color: white;
+}
+
+.paint-colors {
+    display: flex;
+    gap: 4px;
+    align-items: center;
+}
+
+.color-swatch {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    cursor: pointer;
+    border: 2px solid transparent;
+    transition: all 0.2s;
+}
+
+.color-swatch:hover {
+    transform: scale(1.1);
+}
+
+.color-swatch.active {
+    border-color: var(--text-primary);
+    transform: scale(1.1);
+}
+
+.paint-canvas-container {
+    flex: 1;
+    background: var(--bg-secondary);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+.paint-canvas {
+    background: white;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    box-shadow: var(--shadow);
+    cursor: crosshair;
+}
+
+/* Терминал */
+.terminal-app {
+    padding: 0;
+    height: 100%;
+    background: #1e1e1e;
+    color: #00ff00;
+    font-family: 'Consolas', 'Monaco', monospace;
+}
+
+.terminal-header {
+    padding: 12px 16px;
+    border-bottom: 1px solid #333;
+    background: #2d2d2d;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.terminal-title {
+    font-weight: 600;
+    color: #00ff00;
+}
+
+.terminal-controls {
+    display: flex;
+    gap: 8px;
+}
+
+.terminal-control-btn {
+    padding: 4px 8px;
+    border: none;
+    background: #333;
+    border-radius: 4px;
+    cursor: pointer;
+    color: #00ff00;
+    font-size: 12px;
+    transition: all 0.2s;
+}
+
+.terminal-control-btn:hover {
+    background: #444;
+}
+
+.terminal-content {
+    padding: 16px;
+    height: calc(100% - 49px);
+    overflow-y: auto;
+    background: #1e1e1e;
+}
+
+.terminal-line {
+    margin-bottom: 4px;
+    line-height: 1.4;
+}
+
+.terminal-prompt {
+    color: #00ff00;
+}
+
+.terminal-input {
+    background: transparent;
+    border: none;
+    color: #00ff00;
+    font-family: 'Consolas', 'Monaco', monospace;
+    font-size: 14px;
+    outline: none;
+    width: calc(100% - 20px);
+}
+
+.terminal-output {
+    color: #cccccc;
+}
+/* Дополнительные стили для новых приложений */
+
+/* Стили для Paint */
+.paint-app {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    background: var(--bg-primary);
+}
+
+/* Стили для Терминала */
+.terminal-app {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    background: #1e1e1e;
+    color: #00ff00;
+    font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+}
+
+/* Адаптивность для мобильных устройств */
+@media (max-width: 768px) {
+    .paint-toolbar {
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .tool-group {
+        justify-content: center;
+    }
+    
+    #paint-canvas {
+        max-width: 100%;
+        height: auto;
+    }
+    
+    .terminal-content {
+        font-size: 12px;
+    }
+    
+    .terminal-input-line {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+    }
+    
+    .terminal-input {
+        width: 100%;
+    }
+}
+
+/* Анимации для улучшения UX */
+.window {
+    transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+.desktop-icon {
+    transition: all 0.2s ease;
+}
+
+.notification {
+    transition: all 0.3s ease;
+}
+
+/* Улучшения для темной темы */
+.dark-theme .paint-app {
+    background: #1e1e1e;
+}
+
+.dark-theme .paint-toolbar {
+    background: #2d2d2d;
+    border-bottom-color: #444;
+}
+
+.dark-theme .paint-tool {
+    background: #3c3c3c;
+    color: #ffffff;
+}
+
+.dark-theme .paint-action {
+    background: #3c3c3c;
+    color: #ffffff;
+    border-color: #555;
+}
+
+/* Поддержка высокого контраста */
+@media (prefers-contrast: high) {
+    .window {
+        border: 2px solid #000000;
+    }
+    
+    .desktop-icon.selected {
+        background: #000000;
+        color: #ffffff;
+    }
+    
+    .taskbar-app.active {
+        background: #000000;
+        color: #ffffff;
+    }
+}
+
+/* Поддержка reduced-motion */
+@media (prefers-reduced-motion: reduce) {
+    * {
+        animation: none !important;
+        transition: none !important;
+    }
+    
+    .window {
+        transition: none;
+    }
+    
+    .desktop-icon {
+        transition: none;
+    }
+}
