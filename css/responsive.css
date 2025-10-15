@@ -1,0 +1,289 @@
+/* Адаптивность */
+@media (max-width: 1200px) {
+    #start-menu {
+        width: 400px;
+        height: 500px;
+    }
+    
+    .apps-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    #start-menu {
+        width: 100%;
+        height: 70%;
+        left: 0;
+        bottom: 60px;
+        border-radius: 12px 12px 0 0;
+    }
+    
+    .start-menu-content {
+        padding: 16px;
+    }
+    
+    .apps-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 8px;
+    }
+    
+    .app-icon {
+        padding: 12px 8px;
+    }
+    
+    .window {
+        width: 95% !important;
+        height: 80% !important;
+        left: 2.5% !important;
+        top: 5% !important;
+    }
+    
+    .taskbar-center {
+        display: none;
+    }
+    
+    .desktop-icons {
+        padding: 16px;
+        gap: 16px;
+    }
+    
+    .desktop-icon {
+        width: 70px;
+        padding: 10px 6px;
+    }
+    
+    .desktop-icon span:first-child {
+        font-size: 28px;
+    }
+    
+    .calculator {
+        width: 260px;
+        padding: 16px;
+    }
+    
+    .calculator-buttons {
+        gap: 8px;
+    }
+    
+    .calculator-btn {
+        height: 45px;
+        font-size: 16px;
+    }
+}
+
+@media (max-width: 480px) {
+    #start-menu {
+        height: 80%;
+    }
+    
+    .apps-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .login-container {
+        width: 90%;
+        padding: 30px 24px;
+    }
+    
+    .taskbar-right .time-date {
+        display: none;
+    }
+    
+    .system-tray {
+        gap: 4px;
+    }
+    
+    .tray-icon {
+        padding: 4px;
+    }
+    
+    .window-header {
+        padding: 10px 12px;
+    }
+    
+    .window-controls button {
+        width: 28px;
+        height: 28px;
+    }
+    
+    .browser-toolbar {
+        padding: 10px 12px;
+        flex-wrap: wrap;
+    }
+    
+    .browser-url-bar {
+        order: 3;
+        width: 100%;
+        margin-top: 8px;
+    }
+    
+    .explorer-app {
+        flex-direction: column;
+    }
+    
+    .explorer-sidebar {
+        width: 100%;
+        height: auto;
+        max-height: 200px;
+    }
+    
+    .file-grid {
+        grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+        gap: 12px;
+    }
+    
+    .settings-app {
+        flex-direction: column;
+    }
+    
+    .settings-sidebar {
+        width: 100%;
+        height: auto;
+        max-height: 200px;
+        overflow-x: auto;
+        display: flex;
+        flex-wrap: wrap;
+    }
+    
+    .settings-category {
+        flex: 1;
+        min-width: 120px;
+        text-align: center;
+    }
+    
+    .calendar-grid {
+        grid-template-columns: repeat(7, 1fr);
+    }
+    
+    .calendar-day {
+        padding: 8px 4px;
+        min-height: 50px;
+        font-size: 12px;
+    }
+    
+    .calendar-day-header {
+        padding: 8px 4px;
+        font-size: 10px;
+    }
+}
+
+/* Портретная ориентация */
+@media (max-height: 600px) and (orientation: portrait) {
+    #start-menu {
+        height: 85%;
+    }
+    
+    .start-menu-content {
+        height: calc(100% - 140px);
+    }
+    
+    .desktop-icons {
+        padding: 12px;
+        gap: 12px;
+    }
+    
+    .window {
+        height: 90% !important;
+        top: 2% !important;
+    }
+}
+
+/* Ландшафтная ориентация */
+@media (max-height: 500px) and (orientation: landscape) {
+    #taskbar {
+        height: 50px;
+    }
+    
+    #desktop {
+        height: calc(100vh - 50px);
+    }
+    
+    #start-menu {
+        height: 80%;
+        bottom: 60px;
+    }
+    
+    .desktop-icons {
+        flex-direction: row;
+        flex-wrap: wrap;
+        gap: 16px;
+    }
+}
+
+/* Высокопиксельные дисплеи */
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+    .boot-logo {
+        transform: translateZ(0);
+    }
+    
+    .window {
+        border-width: 0.5px;
+    }
+    
+    .context-menu-item {
+        padding: 11px 16px;
+    }
+}
+
+/* Поддержка темной темы системного уровня */
+@media (prefers-color-scheme: dark) {
+    :root {
+        --primary-color: #0086f0;
+        --primary-dark: #106ebe;
+        --primary-light: #50b0f0;
+        --accent-color: #847ff0;
+        --text-primary: #ffffff;
+        --text-secondary: #d2d0ce;
+        --bg-primary: #1e1e1e;
+        --bg-secondary: #2d2d2d;
+        --bg-tertiary: #3c3c3c;
+        --border-color: #4a4a4a;
+        --shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        --shadow-large: 0 8px 24px rgba(0, 0, 0, 0.4);
+    }
+    
+    body:not(.light-theme) {
+        background: var(--primary-color);
+    }
+}
+
+/* Поддержка reduced-motion */
+@media (prefers-reduced-motion: reduce) {
+    * {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}
+
+/* Поддержка контрастности */
+@media (prefers-contrast: high) {
+    :root {
+        --border-color: #000000;
+        --shadow: 0 0 0 1px #000000;
+        --shadow-large: 0 0 0 2px #000000;
+    }
+    
+    .window {
+        border: 2px solid var(--border-color);
+    }
+    
+    .taskbar-app.active {
+        background-color: #000000;
+        color: #ffffff;
+    }
+}
+
+/* Поддержка ориентации */
+@media (orientation: portrait) {
+    .desktop-icons {
+        justify-content: flex-start;
+    }
+}
+
+@media (orientation: landscape) {
+    .desktop-icons {
+        justify-content: center;
+    }
+}
